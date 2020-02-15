@@ -117,10 +117,39 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    // If iterator is passed in but isSorted is not, account for it.
+    if ( typeof(isSorted) !== "boolean" ) {
+      iterator = isSorted;
+      isSorted = false;
+    }
+    // Create required variables for unique values in result and iteratedVals arrays
     var result = [];
-
+    var iteratedVals = [];
+    // Iterate over array
     for( let i = 0; i < array.length; i++ ) {
-      if( _.indexOf(result, array[i]) === -1 ) {
+      // Set alias for current value
+      var value = array[i]; 
+      // Set alias for iterated value if iterator exists, otherwise use current value from array
+      var computed = iterator ? iterator(value, i, array) : value; 
+      // For sorted arrays that don't get processed through iterator 
+      if(isSorted && !iterator) {
+        // if first pass or not already in results
+        if( !i || iteratedVals !== computed ) { 
+          // add to results array
+          result.push(value); 
+          // update last seen value
+          iteratedVals = computed;
+        }
+      } else if (iterator) {
+        // If iterator is passed in, check to see if computed value is not already in iteratedVals
+        if( _.indexOf(iteratedVals, computed) === -1 ) {
+          // If not, add computed value to iteratedVals
+          iteratedVals.push(computed); 
+          // and value to result
+          result.push(value);
+        } 
+      } else if( _.indexOf(result, array[i]) === -1 ) {
+        // If iterator is not passed in, check if current value is not already in results and if not, add it.
         result.push(array[i]);
       }
     }
@@ -134,6 +163,25 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    
+    // Create the results array
+    var result = [];
+    var mappedVal = '';
+    // Iterate over collection
+    if(collection.toString() === "[object Object]") {
+      for (var key in collection) {
+        mappedVal = iterator(collection[key], key, collection);
+        result.push(mappedVal);
+      }
+    } else {
+      for( let i = 0; i < collection.length; i++ ) {
+        mappedVal = iterator(collection[i], i, collection);
+        result.push(mappedVal);
+      }
+    } 
+
+    // Return result
+    return result;
   };
 
   /*
@@ -142,7 +190,7 @@
    * as an example of this.
    */
 
-  // Takes an array of objects and returns and array of the values of
+  // Takes an array of objects and returns an array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(collection, key) {
