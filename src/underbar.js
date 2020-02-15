@@ -168,19 +168,10 @@
     
     // Create the results array
     var result = [];
-    var mappedVal = '';
-    // Iterate over collection
-    if(collection.toString() === "[object Object]") {
-      for (var key in collection) {
-        mappedVal = iterator(collection[key], key, collection);
-        result.push(mappedVal);
-      }
-    } else {
-      for( let i = 0; i < collection.length; i++ ) {
-        mappedVal = iterator(collection[i], i, collection);
-        result.push(mappedVal);
-      }
-    } 
+
+    _.each(collection, function(value) {
+      result.push(iterator(value));
+    });
 
     // Return result
     return result;
