@@ -90,12 +90,6 @@
         result.push(collection[index]);
       }
     });
-    // Another way of achieving the same result.
-    // for( let i = 0; i < collection.length; i++ ) {
-    //   if(test(collection[i])) {
-    //     result.push(collection[i]);
-    //   }
-    // }
 
     return result;
   };
@@ -106,11 +100,19 @@
     // copying code in and modifying it
     var result = [];
 
-    _.each(collection, function(item, index) {
-      if(!test(item)) {
-        result.push(collection[index]);
+    var filtered = _.filter(collection, test);
+    for( let i = 0; i < collection.length; i++ ) {
+      if( _.indexOf(filtered, collection[i]) === -1 ) {
+        result.push(collection[i]);
       }
-    });
+
+    }
+
+    // _.each(collection, function(item, index) {
+    //   if(!test(item)) {
+    //     result.push(collection[index]);
+    //   }
+    // });
 
     return result;
   };
