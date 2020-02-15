@@ -223,6 +223,19 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    var i = 0;
+    // If accumulator not passed
+    if( accumulator === undefined ) {
+      // Use collection[0] as the accumulator
+      accumulator = collection[0];
+      // And don't pass collection[0] to iterator
+      i = 1;
+    }
+    // Iterate throu the loop
+    for( i; i < collection.length; i++ ) {
+      accumulator = iterator(accumulator, collection[i]);
+    }
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
