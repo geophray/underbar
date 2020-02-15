@@ -85,11 +85,17 @@
   _.filter = function(collection, test) {
     var result = [];
 
-    for( let i = 0; i < collection.length; i++ ) {
-      if(test(collection[i])) {
-        result.push(collection[i]);
+    _.each(collection, function(item, index) {
+      if(test(item)) {
+        result.push(collection[index]);
       }
-    }
+    });
+    // Another way of achieving the same result.
+    // for( let i = 0; i < collection.length; i++ ) {
+    //   if(test(collection[i])) {
+    //     result.push(collection[i]);
+    //   }
+    // }
 
     return result;
   };
@@ -100,17 +106,41 @@
     // copying code in and modifying it
     var result = [];
 
-    for( let i = 0; i < collection.length; i++ ) {
-      if(!test(collection[i])) {
-        result.push(collection[i]);
+    _.each(collection, function(item, index) {
+      if(!test(item)) {
+        result.push(collection[index]);
       }
-    }
+    });
 
     return result;
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    // Create result array 
+    var results = [];
+    if(isSorted) {
+      for( let i = 0; i < array.length; i++ ) {
+        // Iterate over result array
+        let j = 0;
+        do {
+          // If value from input array is greater than or equal to current value
+          // in results array
+          if(array[i] >= results[j]) {
+            // Stop comparing current input value and go to the next value in the input array
+            break;
+          } else {
+            results.push(array[i]);
+          } 
+        } while ( let j = 0; j < results.length; j++ ) {
+          
+        }
+      }
+    } else {
+      
+    }
+  // Return result
+  return results;
   };
 
 
