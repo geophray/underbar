@@ -216,17 +216,27 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    var i = 0;
-    // If accumulator not passed
-    if( accumulator === undefined ) {
-      // Use collection[0] as the accumulator
-      accumulator = collection[0];
-      // And don't pass collection[0] to iterator
-      i = 1;
+
+    // Check if collection is object
+    if( collection.toString() === "[object Object]" ) {
+      // Get an array of the keys
+      var objKeys = Object.keys(collection);
     }
-    // Iterate throu the loop
-    for( i; i < collection.length; i++ ) {
-      accumulator = iterator(accumulator, collection[i]);
+    // Set i = 0
+    var i = 0;
+    // If accumulator not passed in
+    if( accumulator === undefined ) {
+      // Use the first value as the accumulator
+      accumulator = objKeys ? collection[objKeys[0]] : collection[0];
+      // Increment i to exclude the first element in the iterator
+      i++;
+    }
+    // Identify the # of elements contained in array/object
+    var length = objKeys ? objKeys.length : collection.length;
+    // Iterate through the array/object
+    for( i; i < length; i++ ) {
+      let item = objKeys ? collection[objKeys[i]] : collection[i];
+      accumulator = iterator(accumulator, item);
     }
     return accumulator;
   };
