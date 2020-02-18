@@ -259,13 +259,18 @@
     // TIP: Try re-using reduce() here.
     // Check if an iterator was passed in.
     // If so, use reduce to check the values of collection 
-    return _.reduce(collection, function (isTruthy, item) {
+    return _.reduce(collection, function(isTruthy, item) {
+      // If isTruthy has been set to false 
       if (!isTruthy) {
+        // bypass additional checks on other items.
         return false;
       }
+      // If there was an iterator passed in
       if (iterator) {
+        // Run the item through it and return the boolean value of its output
         return Boolean(iterator(item));
       } else {
+        // Otherwise, return the boolean value of the item itself
         return Boolean(item);
       }
     }, true);
@@ -275,6 +280,21 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    
+    return _.reduce(collection, function(onePassed, item) {
+      // If one of the items has passed the truth test
+      if(onePassed) {
+        // Bypass checks on future items
+        return true;
+      }
+      // If there is no iterator set
+      if(!iterator) {
+        // Create one (just use _.identity)
+        iterator = _.identity;
+      }
+      // Run item through the iterator and return its boolean value
+      return Boolean(iterator(item));
+    }, false);
   };
 
 
