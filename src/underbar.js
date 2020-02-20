@@ -324,6 +324,13 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var reverseArgs = [];
+    for( let i = 0; i < arguments.length ; i++ ) {
+      reverseArgs.unshift(arguments[i]);
+    }
+    var extended = _.extend(...reverseArgs);
+    _.extend(obj, extended);
+    return obj;
   };
 
 
