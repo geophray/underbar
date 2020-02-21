@@ -374,6 +374,27 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // Create object for storing argument/result pairs
+    var calledFuncs = {};
+    // Create variable for storing result
+    var result;
+
+    return function() {
+      // Store stringified arguments in args variable
+      var args = JSON.stringify(arguments);
+      // Check if args has already been passed in
+      if(calledFuncs[args]) {
+        // If so, return previously generated result
+        return calledFuncs[args];
+      } else {
+        // Otherwise, generate new function call
+        result = func.apply(this, arguments);
+        // And store the results in calledFuncs object
+        calledFuncs[args] = result;
+        // Return result
+        return result;
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
